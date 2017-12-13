@@ -103,7 +103,7 @@
                 //_this.appendChild(img);  // this erroneously worked until we reported issue
                 //_this.innerHTML = img.outerHTML;  // this created an infinite loop on Edge and IE11, not yet re-tested
                 
-                var shadow = this.attachShadow({mode: 'open'});
+                var shadow = _this.attachShadow({mode: 'open'});
                 shadow.appendChild(img);
                 
                 return _this;
