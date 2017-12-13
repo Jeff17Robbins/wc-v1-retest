@@ -69,12 +69,17 @@
                 key: "attributeChangedCallback",
                 value: function attributeChangedCallback(attributeName, oldValue, newValue) {
                     console.log('attributeChangedCallback', this.tagName, attributeName, oldValue, newValue);
-                    var instance = this.getAttribute('data-name');
-                    var output = document.getElementById(instance);
-                    if (newValue === 'Inert')
-                        output.innerHTML = 'not ' + newValue;
-                    else
-                        output.innerHTML = newValue;
+                    if (attributeName === 'data-name') {
+                        this.alt = newValue;
+                        
+                        var output = document.getElementById(instance);
+                        if (newValue === 'Inert')
+                            output.innerHTML = 'not ' + newValue;
+                        else
+                            output.innerHTML = newValue;
+                    } else if (attributeName === 'data-img') {
+                        this.src = newValue;
+                    }
                 }}, {
                 key: "connectedCallback",
                 value: function connectedCallback() {
@@ -83,7 +88,7 @@
             }], [{
                 key: 'observedAttributes',
                 get: function get() {
-                    return ['data-name'];
+                    return ['data-img', 'data-name'];
                 }
             }]);
 
