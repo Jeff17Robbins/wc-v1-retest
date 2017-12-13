@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <x-product data-name="Python" data-img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4621/python.png" data-url="http://example.com/3">
+    <x-product id="page-instance" data-name="Python" data-img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4621/python.png" data-url="http://example.com/3">
     </x-product>
     <div id="Inert">should not get overwritten</div>
     <div id="Python">should get overwritten</div>
@@ -83,7 +83,7 @@
                 }}, {
                 key: "connectedCallback",
                 value: function connectedCallback() {
-                    console.log(this.tagName, 'in connectedCallback');
+                    console.log(this.tagName, 'id =', this.id, 'in connectedCallback');
                 }
             }], [{
                 key: 'observedAttributes',
@@ -124,6 +124,7 @@
         
         // test 2nd call to connectedCallback
         var newXProd = document.createElement('x-product');
+        newXProd.id = "code-instance";
         // JSR this doesn't work because the implementation of the element (above) only works if the 
         // attribute is available in the constructor, which is incorrect code and, instead,
         // needs to pay attention to attributeChangedCallback
