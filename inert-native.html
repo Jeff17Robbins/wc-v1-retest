@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>inert native example</title>
+    <script src="custom-elements-es5-adapter.js"></script>
+</head>
+
+<body>
+    <x-product data-name="Python" data-img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4621/python.png" data-url="http://example.com/3">
+    </x-product>
+    <div id="Inert">should not get overwritten</div>
+    <div id="Python">should get overwritten</div>
+
+    <script type="text/javascript">
+        'use strict';
+        // example from https://developer.mozilla.org/en-US/docs/Web/Web_Components/Custom_Elements transpiled into ES5 by babel
+        var _createClass = function() {
+            function defineProperties(target, props) {
+                for (var i = 0; i < props.length; i++) {
+                    var descriptor = props[i];
+                    descriptor.enumerable = descriptor.enumerable || false;
+                    descriptor.configurable = true;
+                    if ("value" in descriptor) descriptor.writable = true;
+                    Object.defineProperty(target, descriptor.key, descriptor);
+                }
+            }
+            return function(Constructor, protoProps, staticProps) {
+                if (protoProps) defineProperties(Constructor.prototype, protoProps);
+                if (staticProps) defineProperties(Constructor, staticProps);
+                return Constructor;
+            };
+        }();
+
+        function _classCallCheck(instance, Constructor) {
+            if (!(instance instanceof Constructor)) {
+                throw new TypeError("Cannot call a class as a function");
+            }
+        }
+
+        function _possibleConstructorReturn(self, call) {
+            if (!self) {
+                throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+            }
+            return call && (typeof call === "object" || typeof call === "function") ? call : self;
+        }
+
+        function _inherits(subClass, superClass) {
+            if (typeof superClass !== "function" && superClass !== null) {
+                throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+            }
+            subClass.prototype = Object.create(superClass && superClass.prototype, {
+                constructor: {
+                    value: subClass,
+                    enumerable: false,
+                    writable: true,
+                    configurable: true
+                }
+            });
+            if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+        }
+
+        // Create a class for the element
+        var XProduct = function(_HTMLElement) {
+            _inherits(XProduct, _HTMLElement);
+
+            _createClass(XProduct, [{
+                key: "attributeChangedCallback",
+                value: function attributeChangedCallback(attributeName, oldValue, newValue) {
+                    console.log('attributeChangedCallback', this.tagName, attributeName, oldValue, newValue);
+                    var instance = this.getAttribute('data-name');
+                    var output = document.getElementById(instance);
+                    if (newValue === 'Inert')
+                        output.innerHTML = 'not ' + newValue;
+                    else
+                        output.innerHTML = newValue;
+                }}, {
+                key: "connectedCallback",
+                value: function connectedCallback() {
+                    console.log(this.tagName, 'in connectedCallback');
+                }
+            }], [{
+                key: 'observedAttributes',
+                get: function get() {
+                    return ['data-name'];
+                }
+            }]);
+
+            function XProduct() {
+                _classCallCheck(this, XProduct);
+
+                var _this = _possibleConstructorReturn(this, (XProduct.__proto__ || Object.getPrototypeOf(XProduct)).call(this));
+                console.log('constructing', _this.tagName, 'with data-name =', _this.getAttribute('data-name'));
+                
+                var img = document.createElement('img');
+                img.alt = _this.getAttribute('data-name');
+                img.src = _this.getAttribute('data-img');
+                img.width = '150';
+                img.height = '150';
+                img.className = 'product-img';
+
+                //_this.appendChild(img);  // this erroneously worked until we reported issue
+                //_this.innerHTML = img.outerHTML;  // this created an infinite loop on Edge and IE11, not yet re-tested
+                
+                var shadow = _this.attachShadow({mode: 'open'});
+                shadow.appendChild(img);
+                
+                return _this;
+            }
+
+            return XProduct;
+        }(HTMLElement);
+
+        customElements.define('x-product', XProduct);
+        
+        var container = document.createElement('template');
+        container.innerHTML = '<x-product data-name="Inert"></x-product>';
+        var myXProduct = container.content.querySelector('x-product');
+        console.log('myProduct', myXProduct.outerHTML);
+        
+        // test 2nd call to connectedCallback
+        var newXProd = document.createElement('x-product');
+        // JSR this doesn't work because the implementation of the element (above) only works if the 
+        // attribute is available in the constructor, which is incorrect code and, instead,
+        // needs to pay attention to attributeChangedCallback
+        newXProd.setAttribute('data-img', "https://s3-us-west-2.amazonaws.com/s.cdpn.io/4621/python.png");
+        // test special data-property next
+        document.body.appendChild(newXProd);
+
+    </script>
+</body>
+
+</html>
