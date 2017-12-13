@@ -114,24 +114,25 @@
 
             return XProduct;
         }(HTMLElement);
-
-        customElements.define('x-product', XProduct);
         
-        var container = document.createElement('template');
-        container.innerHTML = '<x-product data-name="Inert"></x-product>';
-        var myXProduct = container.content.querySelector('x-product');
-        console.log('myProduct', myXProduct.outerHTML);
-        
-        // test 2nd call to connectedCallback
-        var newXProd = document.createElement('x-product');
-        newXProd.id = "code-instance";
-        // JSR this doesn't work because the implementation of the element (above) only works if the 
-        // attribute is available in the constructor, which is incorrect code and, instead,
-        // needs to pay attention to attributeChangedCallback
-        newXProd.setAttribute('data-img', "https://s3-us-west-2.amazonaws.com/s.cdpn.io/4621/python.png");
-        // test special data-property next
-        document.body.appendChild(newXProd);
+        window.addEventListener('WebComponentsReady', function(e) {
+            customElements.define('x-product', XProduct);
 
+            var container = document.createElement('template');
+            container.innerHTML = '<x-product data-name="Inert"></x-product>';
+            var myXProduct = container.content.querySelector('x-product');
+            console.log('myProduct', myXProduct.outerHTML);
+
+            // test 2nd call to connectedCallback
+            var newXProd = document.createElement('x-product');
+            newXProd.id = "code-instance";
+            // JSR this doesn't work because the implementation of the element (above) only works if the 
+            // attribute is available in the constructor, which is incorrect code and, instead,
+            // needs to pay attention to attributeChangedCallback
+            newXProd.setAttribute('data-img', "https://s3-us-west-2.amazonaws.com/s.cdpn.io/4621/python.png");
+            // test special data-property next
+            document.body.appendChild(newXProd);
+        });
     </script>
 </body>
 
