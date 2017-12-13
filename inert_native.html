@@ -72,7 +72,7 @@
                     if (attributeName === 'data-name') {
                         this.alt = newValue;
                         
-                        var output = document.getElementById(instance);
+                        var output = document.getElementById(newValue);
                         if (newValue === 'Inert')
                             output.innerHTML = 'not ' + newValue;
                         else
