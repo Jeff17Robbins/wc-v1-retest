@@ -70,7 +70,7 @@
                 value: function attributeChangedCallback(attributeName, oldValue, newValue) {
                     console.log('attributeChangedCallback', this.tagName, attributeName, oldValue, newValue);
                     if (attributeName === 'data-name') {
-                        this.alt = newValue;
+                        this.shadowRoot.querySelector('img').alt = newValue;
                         
                         var output = document.getElementById(newValue);
                         if (newValue === 'Inert')
@@ -78,7 +78,7 @@
                         else
                             output.innerHTML = newValue;
                     } else if (attributeName === 'data-img') {
-                        this.src = newValue;
+                        this.shadowRoot.querySelector('img').src = newValue;
                     }
                 }}, {
                 key: "connectedCallback",
@@ -99,8 +99,8 @@
                 console.log('constructing', _this.tagName, 'with data-name =', _this.getAttribute('data-name'));
                 
                 var img = document.createElement('img');
-                img.alt = _this.getAttribute('data-name');
-                img.src = _this.getAttribute('data-img');
+                //img.alt = _this.getAttribute('data-name');
+                //img.src = _this.getAttribute('data-img');
                 img.width = '150';
                 img.height = '150';
                 img.className = 'product-img';
