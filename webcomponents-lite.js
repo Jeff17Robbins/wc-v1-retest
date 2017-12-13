@@ -2019,7 +2019,11 @@ function parentNode(node) {
 }
 
 function firstChild(node) {
-  nodeWalker.currentNode = node;
+  try {
+    nodeWalker.currentNode = node;
+  } catch ( err ) {
+    debugger;
+  }
   return nodeWalker.firstChild();
 }
 
