@@ -1,1 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>template polyfill comment example</title>
+  <script src="webcomponents-lite.js"></script>
+</head>
+
+<body>
+  <template id=template>
+    <!-- some comment -->
+    <div>text</div>
+  </template>
+  <div id=div>
+    <!-- some other comment -->
+    <div>text too</div>
+  </div>
+
+  <script type="text/javascript">
+    window.addEventListener('WebComponentsReady', function(e) {
+      var template = document.getElementById('template');
+      console.log('template innerHTML', template.innerHTML);
+      var div = document.getElementById('div');
+      console.log('div innerHTML', div.innerHTML);
+    });
+  </script>
+</body>
+
+</html>
